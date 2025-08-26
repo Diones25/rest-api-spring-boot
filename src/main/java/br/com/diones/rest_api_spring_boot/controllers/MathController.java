@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.diones.rest_api_spring_boot.exception.UnsupportedMathOperationExcetion;
+
 @RestController
 @RequestMapping("/math")
 public class MathController {
@@ -13,16 +15,16 @@ public class MathController {
   public Double sum(
     @PathVariable("numberOne") String numberOne,
     @PathVariable("numberTwo") String numberTwo
-  ) throws IllegalArgumentException {
+  ) throws UnsupportedMathOperationExcetion {
     if (!IsNumeric(numberOne) || !IsNumeric(numberTwo)) {
-      throw new IllegalArgumentException();
+      throw new UnsupportedMathOperationExcetion("Por favor insira um valor numerico!");
     }
 
     return convertToDouble(numberOne) + convertToDouble(numberTwo);
   }
 
-  private Double convertToDouble(String strNumber) throws IllegalArgumentException{
-    if (strNumber == null || strNumber.isEmpty()) throw new IllegalArgumentException();
+  private Double convertToDouble(String strNumber) throws UnsupportedMathOperationExcetion{
+    if (strNumber == null || strNumber.isEmpty()) throw new UnsupportedMathOperationExcetion("Por favor insira um valor numerico!");
     String number = strNumber.replace(",", ".");
 
     return Double.parseDouble(number);
