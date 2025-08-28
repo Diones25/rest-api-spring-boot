@@ -1,7 +1,6 @@
 package br.com.diones.rest_api_spring_boot.models;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
