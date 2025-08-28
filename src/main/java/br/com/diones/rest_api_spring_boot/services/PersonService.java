@@ -37,6 +37,20 @@ public class PersonService {
     person.setGender("Male");
     return person;
   }
+
+  public Person create(Person person) {
+    logger.info("Criando uma pessoa!");
+    return person;
+  }
+
+  public Person update(Person person) {
+    logger.info("Atualizando uma pessoa!");
+    return person;
+  }
+
+  public void delete(String id) {
+    logger.info("Deletando uma pessoa!");
+  }
   
   public Person mockPerson(int i) {
     Person person = new Person();
