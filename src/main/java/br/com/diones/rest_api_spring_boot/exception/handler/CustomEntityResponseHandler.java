@@ -11,7 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.diones.rest_api_spring_boot.exception.ExceptionResponse;
-import br.com.diones.rest_api_spring_boot.exception.UnsupportedMathOperationExcetion;
+import br.com.diones.rest_api_spring_boot.exception.ResourceNotfoundExcetion;
 
 @ControllerAdvice
 @RestController
@@ -28,14 +28,14 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
-  @ExceptionHandler(UnsupportedMathOperationExcetion.class)
-  public final ResponseEntity<ExceptionResponse> handleBadRequestException(Exception ex, WebRequest request) {
+  @ExceptionHandler(ResourceNotfoundExcetion.class)
+  public final ResponseEntity<ExceptionResponse> handleNotFoundException(Exception ex, WebRequest request) {
     ExceptionResponse response = new ExceptionResponse(
       new Date(),
       ex.getMessage(),
       request.getDescription(false)
     );
 
-    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
   }
 }
