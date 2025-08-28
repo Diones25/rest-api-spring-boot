@@ -12,9 +12,15 @@ import jakarta.validation.constraints.NotBlank;
 @Data
 public class PersonDTO {
 
-  @NotBlank
+  @NotBlank(message = "Primeiro nome é obrigatório!")
   private String firstName;
+
+  @NotBlank(message = "segundo nome é obrigatório!")
   private String lastName;
+
+  @NotBlank(message = "Endereço nome é obrigatório!")
   private String address;
+
+  @NotBlank(message = "Genero nome é obrigatório!")
   private String gender;
 }
