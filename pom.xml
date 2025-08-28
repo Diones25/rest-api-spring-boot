@@ -29,7 +29,13 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!--Biblioteca de validação de body-->	
+		<!--Biblioteca de validação de body-->
+		<dependency>
+    	<groupId>jakarta.validation</groupId>
+    	<artifactId>jakarta.validation-api</artifactId>
+		</dependency>
+
+		<!--Biblioteca para gerar Getters de Setters de forma limpa-->
 		<dependency>
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok</artifactId>
