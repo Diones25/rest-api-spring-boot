@@ -15,4 +15,5 @@ spring:
     open-in-view: false
 logging:
   level:
-    '[br.com.diones]': DEBUG
+    root: WARN
+    #'[br.com.diones]': DEBUG
