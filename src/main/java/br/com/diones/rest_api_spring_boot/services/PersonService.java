@@ -1,10 +1,13 @@
 package br.com.diones.rest_api_spring_boot.services;
 
 import java.util.List;
-import java.util.logging.Logger;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import br.com.diones.rest_api_spring_boot.controllers.TesteLogController;
 import br.com.diones.rest_api_spring_boot.exception.ResourceNotfoundExcetion;
 import br.com.diones.rest_api_spring_boot.models.Person;
 import br.com.diones.rest_api_spring_boot.repository.PersonRepository;
@@ -12,7 +15,7 @@ import br.com.diones.rest_api_spring_boot.repository.PersonRepository;
 @Service
 public class PersonService {
 
-  private Logger logger = Logger.getLogger(PersonService.class.getName());
+  private Logger logger = LoggerFactory.getLogger(TesteLogController.class);
 
   @Autowired
   private PersonRepository repository;
