@@ -1,12 +1,8 @@
 package br.com.diones.rest_api_spring_boot.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@AllArgsConstructor
-@ToString
+@Data
 public class PersonResponseDTO {
   
   private Long id;
