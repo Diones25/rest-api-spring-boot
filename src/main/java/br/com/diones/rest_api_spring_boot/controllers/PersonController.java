@@ -29,6 +29,8 @@ public class PersonController {
   
   @Autowired
   private PersonService personService;
+
+  @Autowired
   private PersonMapper personMapper;
 
   @GetMapping
