@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.diones.rest_api_spring_boot.dto.PersonDTO;
@@ -20,9 +21,10 @@ public class PersonService {
   private final PersonRepository repository;
   private final PersonMapper mapper;
 
+  @Autowired
   public PersonService(PersonRepository repository, PersonMapper mapper) {
-    this.repository = repository;
-    this.mapper = mapper;
+      this.repository = repository;
+      this.mapper = mapper;
   }
 
   public List<PersonDTO> findAll() {
@@ -32,7 +34,7 @@ public class PersonService {
   }
 
   public PersonDTO findById(Long id) {
-    logger.info("Buscando uma pessoa!");
+    logger.info("Buscando pessoa com ID: {}", id);
     Person entity = repository.findById(id)
         .orElseThrow(() -> new ResourceNotfoundExcetion("Pessoa com o id: " + id + " não encontrada!"));
     return mapper.toDTO(entity);
