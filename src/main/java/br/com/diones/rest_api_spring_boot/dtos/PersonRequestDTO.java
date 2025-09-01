@@ -1,4 +1,4 @@
-package br.com.diones.rest_api_spring_boot.dto;
+package br.com.diones.rest_api_spring_boot.dtos;
 
 import java.io.Serializable;
 
@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class PersonDTO implements Serializable {
+public class PersonRequestDTO implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private Long id;
@@ -28,6 +28,6 @@ public class PersonDTO implements Serializable {
   @Size(max = 6, message = "O gênero deve ter no máximo 6 caracteres")
   private String gender;
 
-  public PersonDTO() {
+  public PersonRequestDTO() {
   }
 }

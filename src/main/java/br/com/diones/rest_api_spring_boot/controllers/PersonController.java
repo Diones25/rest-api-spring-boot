@@ -1,6 +1,7 @@
 package br.com.diones.rest_api_spring_boot.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import br.com.diones.rest_api_spring_boot.dto.PersonDTO;
+import br.com.diones.rest_api_spring_boot.dtos.PersonRequestDTO;
+import br.com.diones.rest_api_spring_boot.dtos.PersonResponseDTO;
 import br.com.diones.rest_api_spring_boot.mapper.PersonMapper;
 import br.com.diones.rest_api_spring_boot.models.Person;
 import br.com.diones.rest_api_spring_boot.services.PersonService;
@@ -25,33 +28,42 @@ import jakarta.validation.Valid;
 public class PersonController {
   
   @Autowired
-  private PersonService service;
+  private PersonService personService;
   private PersonMapper personMapper;
 
-  @GetMapping()
-public List<Person> findAll() {
-  List<PersonDTO> dtos = service.findAll();
-  return personMapper.toEntityList(dtos);
-}
-
-  @GetMapping("{id}")
-  public Person findById(@PathVariable("id") Long id) {
-    return personMapper.toEntity(service.findById(id));
+  @GetMapping
+  public ResponseEntity<List<PersonResponseDTO>> findAll() {
+    List<PersonResponseDTO> persons = personService.findAll()
+        .stream()
+        .map(personMapper::toResponseDTO)
+        .collect(Collectors.toList());
+    return ResponseEntity.ok(persons);
   }
 
-  @PostMapping()
-  public Person create(@RequestBody @Valid PersonDTO person) {
-    return personMapper.toEntity(service.create(person));
+  @GetMapping("/{id}")
+  public ResponseEntity<PersonResponseDTO> buscarPorId(@PathVariable Long id) {
+    Person person = personService.findById(id);
+    return ResponseEntity.ok(personMapper.toResponseDTO(person));
   }
 
-  @PutMapping()
-  public Person update(@RequestBody @Valid PersonDTO person) {
-    return personMapper.toEntity(service.update(person));
+  @PostMapping
+  public ResponseEntity<PersonResponseDTO> criar(@Valid @RequestBody PersonRequestDTO dto) {
+    Person person = personMapper.toEntity(dto);
+    Person personSave = personService.create(person);
+    return ResponseEntity.ok(personMapper.toResponseDTO(personSave));
   }
 
-  @DeleteMapping("{id}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void delete(@PathVariable("id") Long id) {
-    service.delete(id);
+  @PutMapping("/{id}")
+  public ResponseEntity<PersonResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody PersonRequestDTO dto) {
+    Person person = personMapper.toEntity(dto);
+    person.setId(id);
+    Person personUpdated = personService.update(person);
+    return ResponseEntity.ok(personMapper.toResponseDTO(personUpdated));
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deletar(@PathVariable Long id) {
+    personService.delete(id);
+    return ResponseEntity.noContent().build();
   }
 }
