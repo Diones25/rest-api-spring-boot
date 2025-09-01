@@ -25,31 +25,30 @@ public class PersonService {
     this.mapper = mapper;
   }
 
-  public List<Person> findAll() {
+  public List<PersonDTO> findAll() {
     logger.info("Buscando uma lista de pessoas!");
-    List<PersonDTO> personsDTO = repository.findAll();
-    return mapper.toEntityList(personsDTO);
+    List<Person> persons = repository.findAll();
+    return mapper.toDTOList(persons);
   }
 
   public PersonDTO findById(Long id) {
     logger.info("Buscando uma pessoa!");
-    PersonDTO entityDTO = repository.findById(id)
-      .orElseThrow(() -> new ResourceNotfoundExcetion("Pessoa com o id: " + id + " não encontrada!"));
-    Person entity = mapper.toEntity(entityDTO);
+    Person entity = repository.findById(id)
+        .orElseThrow(() -> new ResourceNotfoundExcetion("Pessoa com o id: " + id + " não encontrada!"));
     return mapper.toDTO(entity);
   }
 
   public PersonDTO create(PersonDTO dto) {
     logger.info("Criando uma pessoa!");
     Person entity = mapper.toEntity(dto);
-    PersonDTO savedDTO = repository.save(mapper.toDTO(entity));
-    return savedDTO;
+    Person savedEntity = repository.save(entity);
+    return mapper.toDTO(savedEntity);
   }
 
   public PersonDTO update(PersonDTO dto) {
     logger.info("Atualizando uma pessoa!");
 
-    Person entity = mapper.toEntity(repository.findById(dto.getId())
+    Person entity = repository.findById(dto.getId())
         .orElseThrow(() -> new ResourceNotfoundExcetion("Pessoa com o id: " + dto.getId() + " não encontrada!"));
 
     // Atualiza apenas os campos que podem ser alterados
@@ -64,7 +63,7 @@ public class PersonService {
 
   public void delete(Long id) {
     logger.info("Deletando uma pessoa!");
-    Person entity = mapper.toEntity(repository.findById(id)
+    Person entity = repository.findById(id)
         .orElseThrow(() -> new ResourceNotfoundExcetion("Pessoa com o id: " + id + " não encontrada!"));
 
     repository.delete(entity);
