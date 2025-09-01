@@ -18,6 +18,7 @@ import br.com.diones.rest_api_spring_boot.dto.PersonDTO;
 import br.com.diones.rest_api_spring_boot.mapper.PersonMapper;
 import br.com.diones.rest_api_spring_boot.models.Person;
 import br.com.diones.rest_api_spring_boot.services.PersonService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/person")
@@ -39,15 +40,13 @@ public List<Person> findAll() {
   }
 
   @PostMapping()
-  public Person create(@RequestBody Person person) {
-    PersonDTO personDTO = personMapper.toDTO(person);
-    return personMapper.toEntity(service.create(personDTO));
+  public Person create(@RequestBody @Valid PersonDTO person) {
+    return personMapper.toEntity(service.create(person));
   }
 
   @PutMapping()
-  public Person update(@RequestBody Person person) {
-    PersonDTO personDTO = personMapper.toDTO(person);
-    return personMapper.toEntity(service.update(personDTO));
+  public Person update(@RequestBody @Valid PersonDTO person) {
+    return personMapper.toEntity(service.update(person));
   }
 
   @DeleteMapping("{id}")
