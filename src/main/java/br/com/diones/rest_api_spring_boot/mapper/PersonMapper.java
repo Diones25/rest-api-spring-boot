@@ -8,6 +8,5 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface PersonMapper {
   Person toEntity(PersonRequestDTO dto);
-
-  PersonResponseDTO toResponseDTO(Person produto);
+  PersonResponseDTO toResponseDTO(Person person);
 }
