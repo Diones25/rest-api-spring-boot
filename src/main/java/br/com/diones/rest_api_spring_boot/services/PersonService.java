@@ -7,67 +7,50 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.diones.rest_api_spring_boot.dto.PersonDTO;
-import br.com.diones.rest_api_spring_boot.exception.ResourceNotfoundExcetion;
-import br.com.diones.rest_api_spring_boot.mapper.PersonMapper;
+import br.com.diones.rest_api_spring_boot.controllers.TesteLogController;
 import br.com.diones.rest_api_spring_boot.models.Person;
+import br.com.diones.rest_api_spring_boot.exception.ResourceNotfoundExcetion;
 import br.com.diones.rest_api_spring_boot.repository.PersonRepository;
 
 @Service
 public class PersonService {
 
-  private final Logger logger = LoggerFactory.getLogger(PersonService.class);
-
-  private final PersonRepository repository;
-  private final PersonMapper mapper;
+  private Logger logger = LoggerFactory.getLogger(TesteLogController.class);
 
   @Autowired
-  public PersonService(PersonRepository repository, PersonMapper mapper) {
-      this.repository = repository;
-      this.mapper = mapper;
-  }
+  private PersonRepository personRepository;
 
-  public List<PersonDTO> findAll() {
+  public List<Person> findAll() {
     logger.info("Buscando uma lista de pessoas!");
-    List<Person> persons = repository.findAll();
-    return mapper.toDTOList(persons);
+    return personRepository.findAll();
   }
 
-  public PersonDTO findById(Long id) {
-    logger.info("Buscando pessoa com ID: {}", id);
-    Person entity = repository.findById(id)
-        .orElseThrow(() -> new ResourceNotfoundExcetion("Pessoa com o id: " + id + " não encontrada!"));
-    return mapper.toDTO(entity);
+  public Person findById(Long id) {
+    logger.info("Buscando uma pessoa!");
+    return personRepository.findById(id)
+      .orElseThrow(() -> new ResourceNotfoundExcetion("Pessoa com o id: "+id+" não encontrada!"));
   }
 
-  public PersonDTO create(PersonDTO dto) {
+  public Person create(Person person) {
     logger.info("Criando uma pessoa!");
-    Person entity = mapper.toEntity(dto);
-    Person savedEntity = repository.save(entity);
-    return mapper.toDTO(savedEntity);
+    return personRepository.save(person);
   }
 
-  public PersonDTO update(PersonDTO dto) {
+  public Person update(Person person) {
     logger.info("Atualizando uma pessoa!");
 
-    Person entity = repository.findById(dto.getId())
-        .orElseThrow(() -> new ResourceNotfoundExcetion("Pessoa com o id: " + dto.getId() + " não encontrada!"));
-
-    // Atualiza apenas os campos que podem ser alterados
-    entity.setFirstName(dto.getFirstName());
-    entity.setLastName(dto.getLastName());
-    entity.setAddress(dto.getAddress());
-    entity.setGender(dto.getGender());
-
-    Person updated = repository.save(entity);
-    return mapper.toDTO(updated);
+    if(!personRepository.existsById(person.getId())) {
+      throw new ResourceNotfoundExcetion("Pessoa com o id: "+person.getId()+" não encontrada!");
+    }
+    return personRepository.save(person);
   }
 
   public void delete(Long id) {
     logger.info("Deletando uma pessoa!");
-    Person entity = repository.findById(id)
-        .orElseThrow(() -> new ResourceNotfoundExcetion("Pessoa com o id: " + id + " não encontrada!"));
+    if (!personRepository.existsById(id)) {
+      throw new ResourceNotfoundExcetion("Pessoa com o id: " + id + " não encontrada!");
+    }
 
-    repository.delete(entity);
+    personRepository.deleteById(id);
   }
 }
