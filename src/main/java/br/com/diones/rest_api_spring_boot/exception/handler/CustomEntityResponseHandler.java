@@ -11,7 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.diones.rest_api_spring_boot.exception.ExceptionResponse;
-import br.com.diones.rest_api_spring_boot.exception.ResourceNotfoundExcetion;
+import br.com.diones.rest_api_spring_boot.exception.ResourceNotfoundException;
 
 @ControllerAdvice
 @RestController
@@ -28,7 +28,7 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
-  @ExceptionHandler(ResourceNotfoundExcetion.class)
+  @ExceptionHandler(ResourceNotfoundException.class)
   public final ResponseEntity<ExceptionResponse> handleNotFoundException(Exception ex, WebRequest request) {
     ExceptionResponse response = new ExceptionResponse(
       new Date(),
