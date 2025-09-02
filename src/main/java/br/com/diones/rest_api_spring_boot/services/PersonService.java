@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.diones.rest_api_spring_boot.controllers.TesteLogController;
 import br.com.diones.rest_api_spring_boot.models.Person;
-import br.com.diones.rest_api_spring_boot.exception.ResourceNotfoundException;
+import br.com.diones.rest_api_spring_boot.exception.ResourceNotFoundException;
 import br.com.diones.rest_api_spring_boot.repository.PersonRepository;
 
 @Service
@@ -28,7 +28,7 @@ public class PersonService {
   public Person findById(Long id) {
     logger.info("Buscando uma pessoa!");
     return personRepository.findById(id)
-      .orElseThrow(() -> new ResourceNotfoundException("Pessoa com o id: "+id+" não encontrada!"));
+      .orElseThrow(() -> new ResourceNotFoundException("Pessoa com o id: "+id+" não encontrada!"));
   }
 
   public Person create(Person person) {
@@ -40,7 +40,7 @@ public class PersonService {
     logger.info("Atualizando uma pessoa!");
 
     if(!personRepository.existsById(person.getId())) {
-      throw new ResourceNotfoundException("Pessoa com o id: "+person.getId()+" não encontrada!");
+      throw new ResourceNotFoundException("Pessoa com o id: "+person.getId()+" não encontrada!");
     }
     return personRepository.save(person);
   }
@@ -48,7 +48,7 @@ public class PersonService {
   public void delete(Long id) {
     logger.info("Deletando uma pessoa!");
     if (!personRepository.existsById(id)) {
-      throw new ResourceNotfoundException("Pessoa com o id: " + id + " não encontrada!");
+      throw new ResourceNotFoundException("Pessoa com o id: " + id + " não encontrada!");
     }
 
     personRepository.deleteById(id);
