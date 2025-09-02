@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
@@ -14,10 +15,12 @@ public class PersonRequestDTO implements Serializable {
 
   @NotBlank(message = "O primeiro nome é obrigatório")
   @Size(max = 80, message = "O primeiro nome deve ter no máximo 80 caracteres")
+  @Pattern(regexp = "^[^\\d]*$", message = "O primeiro nome não pode conter números")
   private String firstName;
 
   @NotBlank(message = "O sobrenome é obrigatório")
   @Size(max = 80, message = "O sobrenome deve ter no máximo 80 caracteres")
+  @Pattern(regexp = "^[^\\d]*$", message = "O sobrenome não pode conter números")
   private String lastName;
 
   @NotBlank(message = "O endereço é obrigatório")
